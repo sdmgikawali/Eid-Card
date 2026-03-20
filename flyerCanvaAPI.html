@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eid Mubarak Flyer 2026</title>
+    <link rel="icon" type="image/png" href="assets/image/f.png" />
+    <meta name="description"
+        content="Buat flyer Eid Mubarak kustom dengan nama kamu. Generate dan download sebagai gambar PNG." />
+
+    <!-- Tailwind CSS with tw- prefix -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            prefix: 'tw-',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        gold: {
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        dark: {
+                            800: '#0f172a',
+                            900: '#0a0f1a',
+                            950: '#060a12',
+                        }
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        amiri: ['Amiri', 'serif'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(16, 185, 129, 0.3)' },
+                            '50%': { boxShadow: '0 0 40px rgba(16, 185, 129, 0.6)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0f1a;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Decorative background particles */
+        .bg-stars {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-stars::before,
+        .bg-stars::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .bg-stars::before {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+            top: 10%;
+            left: -5%;
+        }
+
+        .bg-stars::after {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
+            bottom: 5%;
+            right: -8%;
+            animation-delay: 3s;
+        }
+
+        /* Flyer preview container — shows the canvas output as an image */
+        #flyer-preview-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        #flyer-preview-container img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Glass card */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            border-radius: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(16, 185, 129, 0.35);
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #34d399 0%, #fbbf24 50%, #34d399 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s linear infinite;
+        }
+
+        /* Input styling */
+        .flyer-input {
+            background: rgba(6, 10, 18, 0.7);
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 14px;
+            padding: 16px 20px;
+            font-size: 1.05rem;
+            color: #e2e8f0;
+            font-family: 'Poppins', sans-serif;
+            width: 100%;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .flyer-input::placeholder {
+            color: rgba(148, 163, 184, 0.5);
+        }
+
+        .flyer-input:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1), 0 0 20px rgba(16, 185, 129, 0.1);
+        }
+
+        /* Buttons */
+        .btn-generate {
+            background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 1.05rem;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-generate::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.15) 50%, transparent 70%);
+            background-size: 200% 100%;
+            animation: shimmer 2.5s linear infinite;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-generate:active {
+            transform: translateY(0);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+            color: #0a0f1a;
+            font-weight: 700;
+            font-size: 1.05rem;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-download::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+            background-size: 200% 100%;
+            animation: shimmer 2.5s linear infinite;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-download:active {
+            transform: translateY(0);
+        }
+
+        .btn-download:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Back link */
+        .back-link {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-link:hover {
+            color: #34d399;
+        }
+
+        /* Preview label */
+        .preview-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 999px;
+            padding: 6px 16px;
+            font-size: 0.8rem;
+            color: #34d399;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        /* Success animation */
+        @keyframes successPop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .success-pop {
+            animation: successPop 0.4s ease;
+        }
+
+        /* Crescent decoration */
+        .crescent-icon {
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: rgba(16, 185, 129, 0.95);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 14px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+
+<body class="tw-min-h-screen tw-font-poppins">
+
+    <!-- Background decoration -->
+    <div class="bg-stars"></div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle" style="margin-right:8px;"></i>
+        <span id="toast-message">Yeeeee !!! berhasil di-generate!</span>
+    </div>
+
+    <!-- Hidden offscreen canvas for rendering -->
+    <canvas id="renderCanvas" style="display:none;"></canvas>
+
+    <!-- Main Content -->
+    <div class="tw-relative tw-z-10 tw-min-h-screen tw-flex tw-flex-col tw-items-center tw-px-4 tw-py-8 sm:tw-py-12">
+
+        <!-- Back to portfolio -->
+        <div class="tw-w-full tw-max-w-2xl tw-mb-6" style="animation: fadeInUp 0.4s ease-out forwards;">
+            <a href="https://a-firman.github.io/Portofolio/" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Kembali ke Portfolio
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="tw-text-center tw-mb-8 sm:tw-mb-10" style="animation: fadeInUp 0.5s ease-out forwards;">
+            <div class="tw-flex tw-items-center tw-justify-center tw-gap-3 tw-mb-3">
+                <span class="crescent-icon"><i class="fas fa-moon"></i></span>
+                <span class="crescent-icon"><i class="fas fa-star"></i></span>
+                <span class="crescent-icon"><i class="fas fa-moon" style="transform:scaleX(-1)"></i></span>
+            </div>
+            <h1 class="gradient-text tw-text-3xl sm:tw-text-4xl lg:tw-text-5xl tw-font-extrabold tw-mb-3"
+                style="line-height:1.2;">
+                Eid Mubarak Flyer
+            </h1>
+            <p class="tw-text-sm sm:tw-text-base" style="color:#94a3b8;">
+                Masukkan nama kamu dan buat flyer Eid Mubarak Versi aku ✨
+            </p>
+        </div>
+
+        <!-- Input Card -->
+        <div class="glass-card tw-w-full tw-max-w-2xl tw-p-6 sm:tw-p-8 tw-mb-8"
+            style="animation: fadeInUp 0.6s ease-out forwards;">
+            <div class="tw-flex tw-flex-col sm:tw-flex-row tw-gap-4">
+                <div class="tw-flex-1">
+                    <label for="nameInput"
+                        class="tw-block tw-text-xs tw-font-semibold tw-uppercase tw-tracking-widest tw-mb-2"
+                        style="color:#34d399;">
+                        <i class="fas fa-user" style="margin-right:6px;"></i>Nama Lengkap Kamuu
+                    </label>
+                    <input type="text" id="nameInput" class="flyer-input" placeholder="Ketik nama kamu di sini..."
+                        maxlength="40" autocomplete="off" />
+                </div>
+                <div class="tw-flex tw-items-end">
+                    <button id="btnGenerate" class="btn-generate tw-w-full sm:tw-w-auto tw-whitespace-nowrap"
+                        onclick="generateFlyer()">
+                        <i class="fas fa-magic" style="margin-right:8px;"></i>Generate
+                    </button>
+                </div>
+            </div>
+            <div class="tw-mt-3 tw-text-right">
+                <span id="charCount" class="tw-text-xs" style="color:#64748b;">0 / 40</span>
+            </div>
+        </div>
+
+        <!-- Preview Section -->
+        <div class="tw-w-full tw-max-w-2xl tw-mb-6" style="animation: fadeInUp 0.7s ease-out forwards;">
+            <div class="tw-flex tw-items-center tw-justify-between tw-mb-4">
+                <span class="preview-badge">
+                    <i class="fas fa-eye"></i> Preview
+                </span>
+                <button id="btnDownload" class="btn-download" onclick="downloadFlyer()" disabled>
+                    <i class="fas fa-download" style="margin-right:8px;"></i>Download
+                </button>
+            </div>
+
+            <!-- Flyer Preview — shows generated canvas as <img> -->
+            <div class="glass-card tw-p-3 sm:tw-p-4" id="flyer-wrapper"
+                style="animation: pulseGlow 3s ease-in-out infinite;">
+                <div id="flyer-preview-container">
+                    <!-- Default: show base flyer image. After generate, replaced with canvas output -->
+                    <img src="assets/image/flyer.png" alt="Eid Mubarak Flyer" id="flyer-preview-img" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="tw-text-center tw-mt-4 tw-mb-8" style="animation: fadeInUp 0.8s ease-out forwards;">
+            <p class="tw-text-xs" style="color:#475569;">
+                Developed by
+                <a href="index.html" style="color:#34d399; text-decoration:none; font-weight:600;">A.Firman</a>
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // =====================================================
+        //  Canvas API Flyer Generator
+        //  - Renders flyer image + name text on a <canvas>
+        //  - Preview and download use the SAME canvas output
+        // =====================================================
+
+        // DOM references
+        const nameInput = document.getElementById('nameInput');
+        const btnGenerate = document.getElementById('btnGenerate');
+        const btnDownload = document.getElementById('btnDownload');
+        const charCount = document.getElementById('charCount');
+        const previewContainer = document.getElementById('flyer-preview-container');
+        const previewImg = document.getElementById('flyer-preview-img');
+        const renderCanvas = document.getElementById('renderCanvas');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+
+        let isGenerated = false;
+        let currentDataURL = null;   // stores the generated PNG data URL
+        let flyerBaseImage = null;   // cached flyer background image
+
+        // Pre-load the flyer background image once
+        (function preloadFlyerImage() {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function () {
+                flyerBaseImage = img;
+            };
+            img.onerror = function () {
+                console.error('Failed to load flyer base image.');
+            };
+            img.src = 'assets/image/flyer.png';
+        })();
+
+        /**
+         * Render flyer on the hidden <canvas> and return the data URL.
+         * The canvas uses the FULL resolution of the original image,
+         * so the downloaded file is always high quality.
+         */
+        function renderFlyerToCanvas(name) {
+            if (!flyerBaseImage) {
+                showToast('⚠️ Gambar flyer belum selesai dimuat. Coba lagi.', '#f59e0b');
+                return null;
+            }
+
+            const ctx = renderCanvas.getContext('2d');
+            const imgW = flyerBaseImage.naturalWidth;
+            const imgH = flyerBaseImage.naturalHeight;
+
+            // Set canvas to the full resolution of the source image
+            renderCanvas.width = imgW;
+            renderCanvas.height = imgH;
+
+            // 1) Draw flyer background
+            ctx.drawImage(flyerBaseImage, 0, 0, imgW, imgH);
+
+            // 2) Draw name text if provided
+            if (name && name.length > 0) {
+                // --- Text settings (matched to the original CSS styling) ---
+                // Font size proportional to image width (~3.5% of width, capped)
+                let fontSize = Math.round(imgW * 0.08);
+                if (fontSize < 24) fontSize = 24;
+                if (fontSize > 80) fontSize = 80;
+
+                ctx.save();
+
+                ctx.font = `700 ${fontSize}px "Amiri", serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                // Measure text and shrink font if it's too wide (80% of canvas)
+                const maxTextWidth = imgW * 0.8;
+                let metrics = ctx.measureText(name);
+                while (metrics.width > maxTextWidth && fontSize > 16) {
+                    fontSize -= 2;
+                    ctx.font = `700 ${fontSize}px "Amiri", serif`;
+                    metrics = ctx.measureText(name);
+                }
+
+                // Position: centered horizontally, near the bottom (~2.5% from bottom)
+                const textX = imgW / 2;
+                const textY = imgH - (imgH * 0.010) - (fontSize / 2);
+
+                // Glow / shadow layers (replicating the CSS text-shadow)
+                // Layer 1: warm outer glow
+                ctx.shadowColor = 'rgba(245, 158, 11, 0.7)';
+                ctx.shadowBlur = 20;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(name, textX, textY);
+
+                // Layer 2: softer wider glow
+                ctx.shadowColor = 'rgba(245, 158, 11, 0.4)';
+                ctx.shadowBlur = 50;
+                ctx.fillText(name, textX, textY);
+
+                // Layer 3: dark drop shadow for readability
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                ctx.shadowBlur = 6;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 3;
+                ctx.fillText(name, textX, textY);
+
+                // Final crisp pass without shadow
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(name, textX, textY);
+
+                ctx.restore();
+            }
+
+            return renderCanvas.toDataURL('image/png', 1.0);
+        }
+
+        // Character counter
+        nameInput.addEventListener('input', function () {
+            charCount.textContent = `${this.value.length} / 40`;
+
+            // Reset generated state when input is cleared
+            if (this.value.trim().length === 0) {
+                btnDownload.disabled = true;
+                isGenerated = false;
+                currentDataURL = null;
+                // Revert preview to original flyer image
+                previewImg.src = 'assets/image/flyer.png';
+            }
+        });
+
+        // Enter key triggers generate
+        nameInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                generateFlyer();
+            }
+        });
+
+        // Generate Flyer — renders on canvas and shows as preview
+        function generateFlyer() {
+            const name = nameInput.value.trim();
+
+            if (!name) {
+                showToast('⚠️ Astagfirullah, Ininya juga belum masukkan nama terlebih dahulu!', '#f59e0b');
+                nameInput.focus();
+                return;
+            }
+
+            const dataURL = renderFlyerToCanvas(name);
+            if (!dataURL) return;
+
+            // Update preview image with canvas output
+            currentDataURL = dataURL;
+            previewImg.src = dataURL;
+
+            // Pop animation
+            previewContainer.classList.remove('success-pop');
+            void previewContainer.offsetWidth;
+            previewContainer.classList.add('success-pop');
+
+            // Enable download
+            btnDownload.disabled = false;
+            isGenerated = true;
+
+            showToast('🙌 Alhamdulillah berhasil di-generate!', '#10b981');
+        }
+
+        // Download Flyer — uses the SAME canvas data URL (identical to preview)
+        function downloadFlyer() {
+            if (!isGenerated || !currentDataURL) return;
+
+            const name = nameInput.value.trim();
+            const safeName = name.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '_') || 'eid_flyer';
+
+            const link = document.createElement('a');
+            link.download = `eid_mubarak_${safeName}.png`;
+            link.href = currentDataURL;
+            link.click();
+
+            showToast('🙌 Alhamdulillah berhasil di-download!', '#10b981');
+        }
+
+        // Toast notification
+        function showToast(message, bgColor) {
+            toastMessage.textContent = message;
+            toast.style.background = bgColor || 'rgba(16, 185, 129, 0.95)';
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // Auto-focus input on load
+        window.addEventListener('load', function () {
+            nameInput.focus();
+        });
+    </script>
+
+</body>
+
+</html>
